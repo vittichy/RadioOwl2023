@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="ConverterFiles\converter.bat" />
+    <None Remove="ConverterFiles\converter2.bat" />
+    <None Remove="ConverterFiles\ffmpeg.exe" />
+    <None Remove="ConverterFiles\youtube-dl.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RadioOwl.Parsers\RadioOwl.Parsers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="ConverterFiles\converter.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <EmbeddedResource Include="ConverterFiles\converter2.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConverterFiles\ffmpeg.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConverterFiles\youtube-dl.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

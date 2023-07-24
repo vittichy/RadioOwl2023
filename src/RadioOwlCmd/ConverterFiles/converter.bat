@@ -1,0 +1,2 @@
+youtube-dl.exe --restrict-filenames --output 28cd3eaf-a7dd-4389-984b-edf7c6ffee3f.m4a https://croaod.cz/stream/28cd3eaf-a7dd-4389-984b-edf7c6ffee3f.m4a/manifest.mpd
+ffmpeg -i 28cd3eaf-a7dd-4389-984b-edf7c6ffee3f.m4a -acodec libmp3lame -ab 192k 28cd3eaf-a7dd-4389-984b-edf7c6ffee3f.mp3
