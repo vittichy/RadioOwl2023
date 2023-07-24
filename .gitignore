@@ -396,3 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/src/RadioOwlCmd/ConverterFiles/ffmpeg.exe
+/src/RadioOwlCmd/ConverterFiles/youtube-dl.exe
