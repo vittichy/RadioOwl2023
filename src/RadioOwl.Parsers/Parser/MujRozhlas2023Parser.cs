@@ -3,6 +3,7 @@ using RadioOwl.Parsers.Parser.Base;
 using RadioOwl.Parsers.Parser.Data;
 using RadioOwl.Parsers.Parser.Helpers;
 using System;
+using System.Linq;
 
 namespace RadioOwl.Parsers.Parser
 {
@@ -67,9 +68,8 @@ namespace RadioOwl.Parsers.Parser
                     switch (mujRozhlasData.MujRozhlas2020SiteInfo.SiteEntityBundle)
                     {
                         case "episode":
-                            throw new NotImplementedException();
                             // neni serial, jen jednodilny porad, ContentSerialAllParts je null
-                            // ParseEpisode(mujRozhlasData.MujRozhlas2020SiteInfo);
+                            ParseEpisode(mujRozhlasData);
                             break;
                         case "show":
                             throw new NotImplementedException();
@@ -101,5 +101,6 @@ namespace RadioOwl.Parsers.Parser
             return result;
         }
 
+     
     }
 }

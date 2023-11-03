@@ -193,6 +193,28 @@ namespace RadioOwl.Parsers.Parser.Base
 
 
 
+        protected void ParseEpisode(MujRozhlasData mujRozhlasData)
+        {
+            if (!mujRozhlasData.MujRozhlas2020SiteInfo.ContentSerialAllParts.HasValue)
+                throw new Exception($"Nepodařilo se dohledat ContentSerialAllParts, pro SiteEntityBundle:'{mujRozhlasData.MujRozhlas2020SiteInfo.SiteEntityBundle}'.");
+
+            var allPartsHtml = GetShowPartsAll(mujRozhlasData.RId);
+            if (allPartsHtml == null)
+                throw new Exception($"Nepodařilo se dohledat přehratelné díly pořadu. RID={mujRozhlasData.RId},SiteEntityBundle:'{mujRozhlasData.MujRozhlas2020SiteInfo.SiteEntityBundle}'.");
+            if (!allPartsHtml.Any())
+                throw new Exception($"Neexistují díly pořadu. RID={mujRozhlasData.RId},SiteEntityBundle:'{mujRozhlasData.MujRozhlas2020SiteInfo.SiteEntityBundle}'.");
+
+            // ID jednotlivých částí
+            var partUuidSet = GetPartIdAll(allPartsHtml);
+
+            // z ID jednotlivých částí už mohu přes API stáhnout JSON s finalními daty pro konkrétní část
+            foreach (var partUuid in partUuidSet)
+            {
+                var partData = GetAudioLink(mujRozhlasData, partUuid);
+                mujRozhlasData.PartSet.Add(partData);
+            }
+        }
+
         /// <summary>
         /// Stahne vsechny (prvnich 99) dilu poradu
         /// </summary>
@@ -318,12 +340,18 @@ namespace RadioOwl.Parsers.Parser.Base
             var urlPart = $@"https://api.mujrozhlas.cz/episodes/{partUuid}";
             StaticHttpClient.HttpDownload(urlPart, out string urlPartInfo);
 
+            // 2023-09-02 problem s unescapovanim "" v description tagu JSONu: 
+            // "attributes":{"title":"Jaroslav Rudiš: Grandhotel","shortTitle":"Jaroslav Rudiš: Grandhotel","description":"<p>Četba na pokračování z románu českého spisovatele, v němž autor vypráví příběh třicetiletého outsiderského samotáře Fleischmana, který pracuje jako "holka pro všechno" v Grandhotelu na Ještědu. V živ
+            // nasledne JObject.Parse hlasi nevalidni JSON
+            // Ovsem momentalne to vypada, ze data chodi normalne cesky bez escape sekvenci? takze to nebudu dela, uvidime.
+            // Jinak by asi bylo reseni unescapovat az hodnoty ziskane z JSONu.
+            // 
             // unescapovat unicode znaky typu "\u003Cp\u003E\u010cetbu na pokra\u010dov\u00e1n\u00ed ze..."
             // viz https://stackoverflow.com/questions/9303257/how-to-decode-a-unicode-character-in-a-string
-            var urlPartInfoUnescaped = System.Text.RegularExpressions.Regex.Unescape(urlPartInfo);
+            // var urlPartInfoUnescaped = System.Text.RegularExpressions.Regex.Unescape(urlPartInfo);
 
             // faq dotazy na json: https://www.newtonsoft.com/json/help/html/QueryJsonSelectTokenJsonPath.htm
-            var partJson = JObject.Parse(urlPartInfoUnescaped);
+            var partJson = JObject.Parse(urlPartInfo);
             return partJson;
         }
 

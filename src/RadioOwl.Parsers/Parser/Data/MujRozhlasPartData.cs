@@ -25,7 +25,7 @@ namespace RadioOwl.Parsers.Parser.Data
         public string DataType { get; internal set; }
         public int? No { get; internal set; }
         public string Title { get; internal set; }
-        public object ShortTitle { get; internal set; }
+        public string ShortTitle { get; internal set; }
         public string DescriptionHtml { get; internal set; }
         public string Description { get; internal set; }
         public string AudioLink { get; internal set; }
@@ -33,12 +33,17 @@ namespace RadioOwl.Parsers.Parser.Data
         /// <summary>
         /// Cesta kam bude stazeno mp4
         /// </summary>
-        public string Mp4a { get; set; }
+        public string TmpMp4aFileName { get; set; }
 
         /// <summary>
         /// Cesta kam bude prekonvertovano mp3 z mp4
         /// </summary>
-        public string Mp3 { get; set; }
+        public string TmpMp3Filename { get; set; }
+
+        /// <summary>
+        /// Finalni jmeno souboru mp3
+        /// </summary>
+        public string FinalMp3Filename { get; set; }
 
 
         /// <summary>
